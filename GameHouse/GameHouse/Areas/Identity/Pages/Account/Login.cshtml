@@ -1,0 +1,57 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container text-center">
+    <br />
+    <section>
+        <form id="account" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email" class="form-label text-center">E-post</label>
+                <input asp-for="Input.Email" class="form-control text-center" autocomplete="username" aria-required="true" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <label asp-for="Input.Password" class="form-label text-center">Parool</label>
+                <input asp-for="Input.Password" class="form-control text-center" autocomplete="current-password" aria-required="true" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <br />
+            <div>
+                <div class="checkbox">
+                    <label asp-for="Input.RememberMe" class="form-label">
+                        <input class="form-check-input" asp-for="Input.RememberMe" />
+                        @*@Html.DisplayNameFor(m => m.Input.RememberMe)*@
+                        Jäta mind meelde
+                    </label>
+                </div>
+            </div>
+            <br />
+            <div>
+                <button id="login-submit" type="submit" class="btn btn-warning">LOGI SISSE</button>
+            </div>
+            <br />
+            <div>
+                <p>
+                    <a id="forgot-password" asp-page="./ForgotPassword">Unustasin parooli</a>
+                </p>
+                @*<p>
+                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                </p>
+                <p>
+                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
+                </p>*@
+            </div>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

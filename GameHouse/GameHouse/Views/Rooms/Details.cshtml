@@ -1,0 +1,39 @@
+﻿@using GameHouse.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@model GameHouse.Data.Room
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
+@{
+    ViewData["Title"] = "Details";
+    Layout = "Layout.cshtml";
+}
+@{
+    var imagePath = "~/images/" + (@Model.Image);
+}
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <br />
+        <img src=@imagePath class="img-fluid" alt="...">
+        <br />
+        <div class="text-center">
+            <h4 class="title">@Html.DisplayFor(model => model.Name)</h4>
+            <p class="body">@Html.DisplayFor(model => model.Description)</p>
+            <p class="price">@Html.DisplayFor(model => model.Price)</p>
+        </div>
+        <div class="text-center">
+            <form method="post">
+                <input asp-controller="Bookings" asp-action="Index" type="submit" value="BRONEERI" class="btn btn-warning">
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <input asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-danger">
+                }
+                else
+                {
+                    <input asp-controller="Home" asp-action="Index" type="submit" value="TAGASI" class="btn btn-danger">
+                }
+            </form>
+        </div>
+    </main>
+</div>
+

@@ -1,0 +1,124 @@
+html {
+    font-size: 12px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.navbar navbar-expand-lg navbar-light {
+    padding: 10px;
+}
+
+    .navbar navbar-expand-lg navbar-light ul li a {
+        color: #ffffff;
+        text-decoration: none;
+    }
+
+    .navbar navbar-expand-lg navbar-light a:active {
+        color: #000;
+    }
+
+    .navbar navbar-expand-lg navbar-light ul li a:hover {
+        background-color: #000;
+    }
+
+.logo {
+    color: #000;
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+.nav-item {
+    margin-left: 4px;
+}
+
+.nav-link {
+    color: white;
+}
+
+.title {
+    font-size: 24px;
+    color: orange;
+    text-transform: uppercase;
+}
+
+.body {
+    font-size: 14px;
+}
+
+.container-fluid {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.img-fluid {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.btn-warning {
+    color: white;
+    background-color: orange;
+}
+
+#account {
+    width: 50%;
+    align-content: center;
+    text-align: center;
+    margin: auto;
+}
+
+#registerForm {
+    width: 50%;
+    align-content: center;
+    text-align: center;
+    margin: auto;
+}
+
+.card-title {
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 15px;
+    text-transform: capitalize;
+}
+
+.card-text {
+    font-size: 12px;
+}
+
+.text-truncate-container {
+    width: 300px;
+    font-size: 12px;
+}
+
+    .text-truncate-container p {
+        -webkit-line-clamp: 4;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+.navButton {
+    font-size: 14px;
+    font-weight: bold;
+    color: orange;
+    text-decoration: none;
+}
+
+.price {
+    font-size: 14px;
+    font-weight: bold;
+    color: orange;
+}

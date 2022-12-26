@@ -1,0 +1,58 @@
+﻿@page
+@model KontaktModel
+
+<div class="img-fluid">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2028.9733693302794!2d24.7630268!3d59.43351869999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4692935f6bf6a8c1%3A0x47bb17d1fd6a6622!2sTartu%20maantee%2025%2C%2010117%20Tallinn!5e0!3m2!1set!2see!4v1669543438139!5m2!1set!2see"
+            width="100%" height="360" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</div>
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="text-center">
+            <h4 class="title">KÜSIMUSTE KORRAL KIRJUTA</h4>
+            <p class="body">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+            <br />
+            <div class="container text-center">
+                <form id="contact-form" name="contact-form" method="post">
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="md-form mb-0">
+                                <label for="email" class="">Sinu e-posti aadress:</label>
+                                <input type="email" id="email" name="email" class="form-control text-center">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="md-form mb-0">
+                                <label for="subject" class="">Teema pealkiri:</label>
+                                <input type="text" id="subject" name="subject" class="form-control text-center">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="md-form">
+                                <br />
+                                <label for="message">Sõnum:</label>
+                                <textarea type="text" id="message" name="message" rows="5" class="form-control md-textarea"></textarea>
+                            </div>
+                        </div>
+
+                        <div>
+                            <br />
+                            <input type="submit" value="SAADA" asp-page-handler="Submit" />
+                        </div>
+                    </div>
+                </form>
+
+                @*               @if(Model.isSend == "send")
+                {
+                <p style="color:green">E-kirja on saadetud!</p>
+                }
+                @if(Model.isSend == "failed")
+                {
+                <p style="color:red">E-kirja ei saadud saadetud!</p>
+                }*@
+            </div>
+    </main>
+</div>
