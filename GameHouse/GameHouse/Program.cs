@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using GameHouse.Areas.Identity.Data;
 using Microsoft.Extensions.DependencyInjection;
+using GameHouse.Repositories;
+using GameHouse.Services;
+using GameHouse.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BookingContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookingContext") ?? throw new InvalidOperationException("Connection string 'BookingContext' not found.")));
@@ -17,6 +21,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<IRoomRepository, RoomRepository>();
+builder.Services.AddScoped<IRoomService, RoomService>();
 
 var app = builder.Build();
 

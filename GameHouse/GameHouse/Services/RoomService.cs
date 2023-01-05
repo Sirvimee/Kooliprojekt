@@ -23,14 +23,22 @@ namespace GameHouse.Services
             return await _roomRepository.List();
         }
 
-        public async Task Save(Room model)
+        public async Task Save(Room room)
         {
-            var room = new Room();
+            if (room.Name != "")
+            {
+                _roomRepository.Save(room);
+            }
+           
+        }
+
+        public async Task Update(Room room)
+        {
             if (room.Id != 0)
             {
-                room = await _roomRepository.Get(model.Id);
+                _roomRepository.Update(room);
             }
-            await _roomRepository.Save(room);
+
         }
 
         public async Task Delete(int? id)

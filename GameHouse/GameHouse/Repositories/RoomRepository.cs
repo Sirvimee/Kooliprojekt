@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GameHouse.Repositories
 {
-    public class RoomRepository
+    public class RoomRepository : IRoomRepository
     {
         private readonly RoomContext _context;
 
@@ -25,9 +25,17 @@ namespace GameHouse.Repositories
 
         public async Task Save(Room room)
         {
+            if (room.Name != "")
+            {
+                _context.Room.AddAsync(room);
+            }
+        }
+
+        public async Task Update(Room room)
+        {
             if (room.Id != 0)
             {
-                _context.Add(room);
+                _context.Update(room);
             }
             await _context.SaveChangesAsync();
         }

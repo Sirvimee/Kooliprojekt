@@ -1,4 +1,5 @@
 ﻿using GameHouse.Data;
+using GameHouse.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,29 +7,29 @@ namespace GameHouse.Controllers
 {
     public class RoomsController : Controller
     {
-        private readonly RoomContext _context;
+        private readonly IRoomService _roomService;
 
-        public RoomsController(RoomContext context)
+        public RoomsController(IRoomService roomService)
         {
-            _context = context;
+            _roomService = roomService;
         }
 
         // GET: Rooms
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Room.ToListAsync());
+            var result = await _roomService.List(); 
+            return View(result);
         }
 
         // GET: Rooms/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Room == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var room = await _context.Room
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _roomService.Get(id.Value);
             if (room == null)
             {
                 return NotFound();
@@ -48,12 +49,12 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Price,Image")] Room room)
+        public async Task<IActionResult> Create(Room room)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(room);
-                await _context.SaveChangesAsync();
+                _roomService.Save(room);
+                await _roomService.Save(room);
                 return RedirectToAction(nameof(Index));
             }
             return View(room);
@@ -62,12 +63,12 @@ namespace GameHouse.Controllers
         // GET: Rooms/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Room == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var room = await _context.Room.FindAsync(id);
+            var room = await _roomService.Get(id.Value);
             if (room == null)
             {
                 return NotFound();
@@ -80,7 +81,7 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Price,Image")] Room room)
+        public async Task<IActionResult> Edit(int id, Room room)
         {
             if (id != room.Id)
             {
@@ -89,22 +90,8 @@ namespace GameHouse.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(room);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RoomExists(room.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                _roomService.Update(room);
+                await _roomService.Update(room);
                 return RedirectToAction(nameof(Index));
             }
             return View(room);
@@ -113,13 +100,12 @@ namespace GameHouse.Controllers
         // GET: Rooms/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Room == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var room = await _context.Room
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var room = await _roomService.Get(id.Value);
             if (room == null)
             {
                 return NotFound();
@@ -133,28 +119,20 @@ namespace GameHouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Room == null)
-            {
-                return Problem("Entity set 'RoomContext.Room'  is null.");
-            }
-            var room = await _context.Room.FindAsync(id);
-            if (room != null)
-            {
-                _context.Room.Remove(room);
-            }
+            await _roomService.Delete(id);
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RoomExists(int id)
-        {
-            return _context.Room.Any(e => e.Id == id);
-        }
+        //private bool RoomExists(int id)
+        //{
+        //    return _context.Room.Any(e => e.Id == id);
+        //}
 
         public async Task<IActionResult> AdminRooms()
         {
-            return View(await _context.Room.ToListAsync());
+            var result = await _roomService.List();
+            return View(result);
         }
     }
 }
