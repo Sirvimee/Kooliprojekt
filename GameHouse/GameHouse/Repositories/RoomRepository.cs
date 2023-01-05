@@ -1,10 +1,10 @@
 ﻿using GameHouse.Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
-namespace GameHouse.Data
+namespace GameHouse.Repositories
 {
-    public class RoomRepository : IRoomRepository
+    public class RoomRepository
     {
         private readonly RoomContext _context;
 
@@ -13,34 +13,36 @@ namespace GameHouse.Data
             _context = context;
         }
 
-        public IEnumerable<Room> GetAllRooms()
+        public async Task<Room> Get(int id)
         {
-            return _context.Room.ToList();
+            return await _context.Room.FirstOrDefaultAsync();
         }
 
-        public Room GetRoomById(int id)
+        public async Task<IList<Room>> List()
         {
-            return _context.Room.Find(id);
+            return await _context.Room.ToListAsync();
         }
 
-        public void AddRoom(Room room)
+        public async Task Save(Room room)
         {
-            _context.Room.Add(room);
-            _context.SaveChanges();
+            if (room.Id != 0)
+            {
+                _context.Add(room);
+            }
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateRoom(Room room)
+        public async Task Delete(int? id)
         {
-            _context.Room.Update(room);
-            _context.SaveChanges();
-        }
+            var room = await _context.Room.FindAsync(id);
+            if (room == null)
+            {
+                return;
+            }
 
-        public void DeleteRoom(int id)
-        {
-            var room = _context.Room.Find(id);
             _context.Room.Remove(room);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
+
     }
 }
-

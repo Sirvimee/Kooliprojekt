@@ -1,39 +1,41 @@
 ﻿using GameHouse.Data;
+using GameHouse.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameHouse.Services
 {
     public class RoomService : IRoomService
     {
-        private readonly RoomRepository _roomRepository;
+        private readonly IRoomRepository _roomRepository;
 
-        public RoomService(RoomRepository roomRepository)
+        public RoomService(IRoomRepository roomRepository)
         {
             _roomRepository = roomRepository;
         }
 
-        public IEnumerable<Room> GetAllRooms()
+        public async Task<Room> Get(int id)
         {
-            return _roomRepository.GetAllRooms();
+            return await _roomRepository.Get(id);
         }
 
-        public Room GetRoomById(int id)
+        public async Task<IList<Room>> List()
         {
-            return _roomRepository.GetRoomById(id);
+            return await _roomRepository.List();
         }
 
-        public void AddRoom(Room room)
+        public async Task Save(Room model)
         {
-            _roomRepository.AddRoom(room);
+            var room = new Room();
+            if (room.Id != 0)
+            {
+                room = await _roomRepository.Get(model.Id);
+            }
+            await _roomRepository.Save(room);
         }
 
-        public void UpdateRoom(Room room)
+        public async Task Delete(int? id)
         {
-            _roomRepository.UpdateRoom(room);
-        }
-
-        public void DeleteRoom(int id)
-        {
-            _roomRepository.DeleteRoom(id);
+            await _roomRepository.Delete(id);
         }
     }
 }

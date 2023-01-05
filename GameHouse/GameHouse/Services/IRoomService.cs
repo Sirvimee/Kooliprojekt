@@ -1,13 +1,13 @@
 ﻿using GameHouse.Data;
+using GameHouse.Repositories;
 
 namespace GameHouse.Services
 {
     public interface IRoomService
     {
-        IEnumerable<Room> GetAllRooms();
-        Room GetRoomById(int id);
-        void AddRoom(Room room);
-        void UpdateRoom(Room room);
-        void DeleteRoom(int id);
+        Task<Room> Get(int id);
+        Task<IList<Room>> List();
+        Task Save(Room model);
+        Task Delete(int? id);
     }
 }

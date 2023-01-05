@@ -16,7 +16,7 @@ namespace GameHouse.Controllers
         // GET: Rooms
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Room.ToListAsync());
+            return View(await _context.Room.ToListAsync());
         }
 
         // GET: Rooms/Details/5
@@ -142,14 +142,14 @@ namespace GameHouse.Controllers
             {
                 _context.Room.Remove(room);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RoomExists(int id)
         {
-          return _context.Room.Any(e => e.Id == id);
+            return _context.Room.Any(e => e.Id == id);
         }
 
         public async Task<IActionResult> AdminRooms()
