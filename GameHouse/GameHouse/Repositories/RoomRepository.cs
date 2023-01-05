@@ -25,10 +25,11 @@ namespace GameHouse.Repositories
 
         public async Task Save(Room room)
         {
-            if (room.Name != "")
+            if (room.Id != 0)
             {
-                _context.Room.AddAsync(room);
+                _context.Add(room);
             }
+            await _context.SaveChangesAsync();
         }
 
         public async Task Update(Room room)

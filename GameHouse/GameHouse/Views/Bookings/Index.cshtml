@@ -1,4 +1,8 @@
-﻿@model IEnumerable<GameHouse.Data.Booking>
+﻿@using GameHouse.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@model IEnumerable<GameHouse.Data.Booking>
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
 
 @{
     ViewData["Title"] = "Index";
@@ -6,61 +10,69 @@
 }
 
 <br />
-<div class="text-center">
-    <a asp-action="Create" type="submit" value="LISA UUS BRONEERING" class="btn btn-warning">LISA UUS BRONEERING</a>
+
+<div class="container">
+    <main role="main" class="pb-3">
+        <div class="text-center">
+            <a asp-action="Create" type="submit" value="LISA UUS BRONEERING" class="btn btn-warning">LISA UUS BRONEERING</a>
+        </div>
+        <br />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Date)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Time)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ContactName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Phone)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
 </div>
-<br />
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Time)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContactName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
