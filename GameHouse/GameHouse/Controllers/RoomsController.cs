@@ -53,7 +53,6 @@ namespace GameHouse.Controllers
         {
             if (ModelState.IsValid)
             {
-                _roomService.Save(room);
                 await _roomService.Save(room);
                 return RedirectToAction(nameof(Index));
             }
@@ -90,8 +89,7 @@ namespace GameHouse.Controllers
 
             if (ModelState.IsValid)
             {
-                _roomService.Update(room);
-                await _roomService.Update(room);
+                await _roomService.Save(room);
                 return RedirectToAction(nameof(Index));
             }
             return View(room);

@@ -14,6 +14,7 @@ namespace GameHouse.Data
         public int NameId { get; set; }
 
         [DisplayName("Kuupäev")]
+        [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime Date { get; set; }
 

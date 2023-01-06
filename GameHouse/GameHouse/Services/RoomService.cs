@@ -25,20 +25,7 @@ namespace GameHouse.Services
 
         public async Task Save(Room room)
         {
-            if (room.Name != "")
-            {
-                _roomRepository.Save(room);
-            }
-           
-        }
-
-        public async Task Update(Room room)
-        {
-            if (room.Id != 0)
-            {
-                _roomRepository.Update(room);
-            }
-
+            await _roomRepository.Save(room);
         }
 
         public async Task Delete(int? id)

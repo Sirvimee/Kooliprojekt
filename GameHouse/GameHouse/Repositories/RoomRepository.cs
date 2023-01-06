@@ -15,7 +15,7 @@ namespace GameHouse.Repositories
 
         public async Task<Room> Get(int id)
         {
-            return await _context.Room.FirstOrDefaultAsync();
+            return await _context.Room.FirstOrDefaultAsync(x=>x.Id == id);
         }
 
         public async Task<IList<Room>> List()
@@ -25,10 +25,15 @@ namespace GameHouse.Repositories
 
         public async Task Save(Room room)
         {
-            if (room.Id != 0)
+            if (room.Id == 0)
             {
-                _context.Add(room);
+                await _context.AddAsync(room);
             }
+            else
+            {
+                _context.Update(room);
+            }
+
             await _context.SaveChangesAsync();
         }
 

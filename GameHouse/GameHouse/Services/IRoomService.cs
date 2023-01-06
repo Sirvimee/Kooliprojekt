@@ -8,7 +8,6 @@ namespace GameHouse.Services
         Task<Room> Get(int id);
         Task<IList<Room>> List();
         Task Save(Room model);
-        Task Update(Room room);
         Task Delete(int? id);
     }
 }

@@ -49,6 +49,8 @@ namespace GameHouse.Models
             smtpClient.Credentials = new NetworkCredential("e-maili aadress", "parool");
             smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.Send(message);
+            ServicePointManager.ServerCertificateValidationCallback =
+    (sender, certificate, chain, sslPolicyErrors) => true;
             return true;
 
         }
