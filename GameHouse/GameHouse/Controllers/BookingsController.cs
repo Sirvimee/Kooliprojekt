@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GameHouse.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GameHouse.Data;
 
 namespace GameHouse.Controllers
 {
@@ -154,14 +150,14 @@ namespace GameHouse.Controllers
             {
                 _context.Booking.Remove(booking);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool BookingExists(int id)
         {
-          return _context.Booking.Any(e => e.Id == id);
+            return _context.Booking.Any(e => e.Id == id);
         }
     }
 }

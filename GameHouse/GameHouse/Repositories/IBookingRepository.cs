@@ -5,10 +5,10 @@ namespace GameHouse.Repositories
 {
     public interface IBookingRepository
     {
-        IEnumerable<Booking> GetAllBookings();
-        Booking GetBookingById(int id);
-        void AddBooking(Booking booking);
-        void UpdateBooking(Booking booking);
-        void DeleteBooking(int id);
+        Task<Booking> Get(int id);
+        Task<IList<Booking>> List();
+        Task Save(Booking booking);
+        Task Update(Booking booking);
+        Task Delete(int? id);
     }
 }

@@ -5,52 +5,31 @@ namespace GameHouse.Services
 {
     public class BookingService : IBookingService
     {
-        private readonly BookingRepository _bookingRepository;
+        private readonly IBookingRepository _bookingRepository;
 
-        public BookingService(BookingRepository bookingRepository)
+        public BookingService(IBookingRepository bookingRepository)
         {
             _bookingRepository = bookingRepository;
         }
 
-        public IEnumerable<Booking> GetAllBookings()
+        public async Task<Booking> Get(int id)
         {
-            return _bookingRepository.GetAllBookings();
+            return await _bookingRepository.Get(id);
         }
 
-        public Booking GetBookingById(int id)
+        public async Task<IList<Booking>> List()
         {
-            return _bookingRepository.GetBookingById(id);
+            return await _bookingRepository.List();
         }
 
-        public void AddBooking(Booking booking)
+        public async Task Save(Booking booking)
         {
-             _bookingRepository.AddBooking(booking);
+            await _bookingRepository.Save(booking);
         }
 
-        public void UpdateBooking(Booking booking)
+        public async Task Delete(int? id)
         {
-            _bookingRepository.UpdateBooking(booking);
-        }
-
-        public void DeleteBooking(int id)
-        {
-             _bookingRepository.DeleteBooking(id);
-        }
-
-        public IEnumerable<Booking> GetAvailableBookingsForDate(DateTime date)
-        {
-            return _bookingRepository.GetAllBookings()
-                .Where(b => b.Date == date && b.Time == "Available");
-        }
-
-        public void MakeBooking(Booking booking)
-        {
-            _bookingRepository.AddBooking(booking);
-        }
-
-        public void CancelBooking(int id)
-        {
-             _bookingRepository.DeleteBooking(id);
+            await _bookingRepository.Delete(id);
         }
     }
 }

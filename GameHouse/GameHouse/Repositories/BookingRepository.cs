@@ -1,4 +1,5 @@
 ﻿using GameHouse.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameHouse.Repositories
 {
@@ -11,33 +12,49 @@ namespace GameHouse.Repositories
             _context = context;
         }
 
-        public IEnumerable<Booking> GetAllBookings()
+        public async Task<Booking> Get(int id)
         {
-            return _context.Booking.ToList();
+            return await _context.Booking.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Booking GetBookingById(int id)
+        public async Task<IList<Booking>> List()
         {
-            return _context.Booking.Find(id);
+            return await _context.Booking.ToListAsync();
         }
 
-        public void AddBooking(Booking booking)
+        public async Task Save(Booking booking)
         {
-            _context.Booking.Add(booking);
-            _context.SaveChanges();
+            if (booking.Id == 0)
+            {
+                await _context.AddAsync(booking);
+            }
+            else
+            {
+                _context.Update(booking);
+            }
+
+            await _context.SaveChangesAsync();
         }
 
-        public void UpdateBooking(Booking booking)
+        public async Task Update(Booking booking)
         {
-            _context.Booking.Update(booking);
-            _context.SaveChanges();
+            if (booking.Id != 0)
+            {
+                _context.Update(booking);
+            }
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteBooking(int id)
+        public async Task Delete(int? id)
         {
-            var booking = _context.Booking.Find(id);
+            var booking = await _context.Booking.FindAsync(id);
+            if (booking == null)
+            {
+                return;
+            }
+
             _context.Booking.Remove(booking);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
