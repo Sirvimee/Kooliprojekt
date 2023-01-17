@@ -1,5 +1,6 @@
 ﻿using GameHouse.Data;
 using GameHouse.Repositories;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GameHouse.Services
 {
@@ -20,6 +21,11 @@ namespace GameHouse.Services
         public async Task<IList<Booking>> List()
         {
             return await _bookingRepository.List();
+        }
+
+        public async Task<List<SelectListItem>> GetRoomDropdownList()
+        {
+            return _bookingRepository.GetRoomDropdownList();
         }
 
         public async Task Save(Booking booking)

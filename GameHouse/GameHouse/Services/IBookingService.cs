@@ -1,4 +1,5 @@
 ﻿using GameHouse.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GameHouse.Services
 {
@@ -6,6 +7,7 @@ namespace GameHouse.Services
     {
         Task<Booking> Get(int id);
         Task<IList<Booking>> List();
+        Task<List<SelectListItem>> GetRoomDropdownList();
         Task Save(Booking booking);
         Task Delete(int? id);
     }

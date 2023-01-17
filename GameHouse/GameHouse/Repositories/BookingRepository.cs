@@ -1,25 +1,43 @@
 ﻿using GameHouse.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameHouse.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
-        private readonly BookingContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BookingRepository(BookingContext context)
+        public BookingRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
         public async Task<Booking> Get(int id)
         {
-            return await _context.Booking.FirstOrDefaultAsync(x => x.Id == id);
+            var booking = await _context.Booking
+                .Include(b => b.Name)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            return (booking);
+
         }
 
         public async Task<IList<Booking>> List()
         {
             return await _context.Booking.ToListAsync();
+        }
+
+        public List<SelectListItem> GetRoomDropdownList()
+        {
+            return _context.Room
+            .Select(r => new SelectListItem
+            {
+                Value = r.Id.ToString(),
+                Text = r.Name
+            })
+            .ToList();
         }
 
         public async Task Save(Booking booking)

@@ -6,9 +6,9 @@ namespace GameHouse.Repositories
 {
     public class RoomRepository : IRoomRepository
     {
-        private readonly RoomContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public RoomRepository(RoomContext context)
+        public RoomRepository(ApplicationDbContext context)
         {
             _context = context;
         }

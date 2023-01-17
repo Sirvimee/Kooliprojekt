@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GameHouse.Migrations.Booking
+namespace GameHouse.Migrations.ApplicationDb
 {
-    public partial class InitBookingsCreate : Migration
+    public partial class EditingDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

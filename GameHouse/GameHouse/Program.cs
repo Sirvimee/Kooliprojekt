@@ -7,10 +7,8 @@ using GameHouse.Services;
 using GameHouse.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<BookingContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BookingContext") ?? throw new InvalidOperationException("Connection string 'BookingContext' not found.")));
-builder.Services.AddDbContext<RoomContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("RoomContext") ?? throw new InvalidOperationException("Connection string 'RoomContext' not found.")));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDbContext") ?? throw new InvalidOperationException("Connection string 'ApplicationDbContext' not found.")));
 var connectionString = builder.Configuration.GetConnectionString("UserDBContextConnection") ?? throw new InvalidOperationException("Connection string 'UserDBContextConnection' not found.");
 
 builder.Services.AddDbContext<UserDBContext>(options =>

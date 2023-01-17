@@ -7,9 +7,9 @@ namespace GameHouse.Controllers
 {
     public class BookingsController : Controller
     {
-        private readonly BookingContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public BookingsController(BookingContext context)
+        public BookingsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -41,9 +41,19 @@ namespace GameHouse.Controllers
         }
 
         // GET: Bookings/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["NameId"] = new SelectList(_context.Set<Room>(), "Id", "Name");
+            var rooms = await _context.Room
+                                         .OrderBy(room => room.Name)
+                                         .Select(room => new SelectListItem
+                                         {
+                                             Value = room.Id.ToString(),
+                                             Text = room.Name
+                                         })
+                                       .ToListAsync();
+
+            ViewBag.Rooms = rooms;
+
             return View();
         }
 
@@ -60,8 +70,19 @@ namespace GameHouse.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NameId"] = new SelectList(_context.Set<Room>(), "Id", "Name", booking.NameId);
-            return View(booking);
+
+            var rooms = await _context.Room
+                                         .OrderBy(room => room.Name)
+                                         .Select(room => new SelectListItem
+                                         {
+                                             Value = room.Id.ToString(),
+                                             Text = room.Name
+                                         })
+                                       .ToListAsync();
+
+            ViewBag.Rooms = rooms;
+
+            return View();
         }
 
         // GET: Bookings/Edit/5
@@ -77,8 +98,19 @@ namespace GameHouse.Controllers
             {
                 return NotFound();
             }
-            ViewData["NameId"] = new SelectList(_context.Set<Room>(), "Id", "Name", booking.NameId);
-            return View(booking);
+
+            var rooms = await _context.Room
+                                         .OrderBy(room => room.Name)
+                                         .Select(room => new SelectListItem
+                                         {
+                                             Value = room.Id.ToString(),
+                                             Text = room.Name
+                                         })
+                                       .ToListAsync();
+
+            ViewBag.Rooms = rooms;
+
+            return View();
         }
 
         // POST: Bookings/Edit/5
@@ -113,8 +145,19 @@ namespace GameHouse.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NameId"] = new SelectList(_context.Set<Room>(), "Id", "Name", booking.NameId);
-            return View(booking);
+
+            var rooms = await _context.Room
+                                         .OrderBy(room => room.Name)
+                                         .Select(room => new SelectListItem
+                                         {
+                                             Value = room.Id.ToString(),
+                                             Text = room.Name
+                                         })
+                                       .ToListAsync();
+
+            ViewBag.Rooms = rooms;
+
+            return View();
         }
 
         // GET: Bookings/Delete/5

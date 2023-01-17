@@ -20,5 +20,12 @@ namespace GameHouse.Data
         [DisplayName("Pilt")]
         public string? Image { get; set; }
 
+        public IList<Booking> Bookings { get; set; }
+
+        public Room()
+        {
+            Bookings = new List<Booking>();
+        }
+
     }
 }
