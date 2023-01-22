@@ -16,11 +16,7 @@ namespace GameHouse.Repositories
 
         public async Task<Booking> Get(int id)
         {
-            var booking = await _context.Booking
-                .Include(b => b.Name)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            return (booking);
+            return await _context.Booking.FirstOrDefaultAsync(x => x.Id == id);
 
         }
 

@@ -1,5 +1,6 @@
 ﻿using ServiceStack.DataAnnotations;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GameHouse.Data
 {
@@ -20,11 +21,17 @@ namespace GameHouse.Data
         [DisplayName("Pilt")]
         public string? Image { get; set; }
 
+        [NotMapped]
+        [DisplayName("Lae pilt ülesse")]
+        public IFormFile ImageFile { get; set; }
+
         public IList<Booking> Bookings { get; set; }
+        public IList<Gallery> Galleries { get; set; }
 
         public Room()
         {
             Bookings = new List<Booking>();
+            Galleries = new List<Gallery>();
         }
 
     }

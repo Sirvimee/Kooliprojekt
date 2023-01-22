@@ -4,22 +4,20 @@ using GameHouse.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GameHouse.Migrations.ApplicationDb
+namespace GameHouse.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230117182303_EditingDatabase")]
-    partial class EditingDatabase
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.12")
+                .HasAnnotation("ProductVersion", "6.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -55,6 +53,27 @@ namespace GameHouse.Migrations.ApplicationDb
                     b.HasIndex("NameId");
 
                     b.ToTable("Booking");
+                });
+
+            modelBuilder.Entity("GameHouse.Data.Gallery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NameId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NameId");
+
+                    b.ToTable("Gallery");
                 });
 
             modelBuilder.Entity("GameHouse.Data.Room", b =>
@@ -93,9 +112,22 @@ namespace GameHouse.Migrations.ApplicationDb
                     b.Navigation("Name");
                 });
 
+            modelBuilder.Entity("GameHouse.Data.Gallery", b =>
+                {
+                    b.HasOne("GameHouse.Data.Room", "Name")
+                        .WithMany("Galleries")
+                        .HasForeignKey("NameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Name");
+                });
+
             modelBuilder.Entity("GameHouse.Data.Room", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("Galleries");
                 });
 #pragma warning restore 612, 618
         }

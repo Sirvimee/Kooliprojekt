@@ -13,10 +13,10 @@
 
 <div class="container">
     <main role="main" class="pb-3">
-        <br />
-        <img src="~/images/@Model.Image" class="img-fluid" alt="...">
-        <br />
         <div class="text-center">
+            <br />
+            <img src="~/images/@Model.Image" class="img-fluid" alt="...">
+            <br />
             <h4 class="title">@Html.DisplayFor(model => model.Name)</h4>
             <p class="body">@Html.DisplayFor(model => model.Description)</p>
             <p class="price">@Html.DisplayFor(model => model.Price)</p>
@@ -30,7 +30,7 @@
                 }
                 else
                 {
-                    <input asp-controller="Home" asp-action="Index" type="submit" value="TAGASI" class="btn btn-danger">
+                    <input asp-controller="Rooms" asp-action="Index" type="submit" value="TAGASI" class="btn btn-danger">
                 }
             </form>
         </div>

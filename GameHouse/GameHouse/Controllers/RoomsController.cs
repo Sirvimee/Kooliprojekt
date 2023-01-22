@@ -51,7 +51,7 @@ namespace GameHouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Room room)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 await _roomService.Save(room);
                 return RedirectToAction(nameof(Index));

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GameHouse.Migrations.ApplicationDb
+namespace GameHouse.Migrations
 {
-    public partial class EditingDatabase : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,9 +49,34 @@ namespace GameHouse.Migrations.ApplicationDb
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Gallery",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NameId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Gallery", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Gallery_Room_NameId",
+                        column: x => x.NameId,
+                        principalTable: "Room",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Booking_NameId",
                 table: "Booking",
+                column: "NameId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Gallery_NameId",
+                table: "Gallery",
                 column: "NameId");
         }
 
@@ -59,6 +84,9 @@ namespace GameHouse.Migrations.ApplicationDb
         {
             migrationBuilder.DropTable(
                 name: "Booking");
+
+            migrationBuilder.DropTable(
+                name: "Gallery");
 
             migrationBuilder.DropTable(
                 name: "Room");

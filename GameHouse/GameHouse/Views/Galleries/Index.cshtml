@@ -1,0 +1,36 @@
+﻿@model IEnumerable<GameHouse.Data.Gallery>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container text-center">
+    <section>
+        <br />
+        <a asp-action="Create" type="submit" value="LISA" class="btn btn-warning text-center">LISA PILTE</a>
+        <br />
+    </section>
+</div>
+<br />
+<div style="display:flex;justify-content:center;flex-direction:row;flex-wrap:wrap;gap:2em">
+    @foreach (var item in Model)
+    {
+        var imagePath = "images/" + (item.ImageName);
+
+        <div class="card border-white" style="width: 20rem;">
+            <div class="card-block">
+                <img src=@imagePath class="card-img-top" alt="...">
+                <div class="card-block">
+                    <h5 class="card-title">@item.ImageName</h5>
+                    <div class="text-truncate-container">
+                        <p>@item.Name.Name</p>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Kustuta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<br />
+
+
