@@ -9,6 +9,8 @@
     <section>
 
         <form asp-action="Create" id="account" enctype="multipart/form-data">
+            <input type="hidden" asp-for="NameId" value="@Model.NameId" />
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -18,11 +20,11 @@
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <br />
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <select asp-for="NameId" class="form-control text-center" asp-items="ViewBag.NameId"></select>
             </div>
-            <br />
+            <br />*@
             <div class="form-group text-center">
                 <input type="submit" value="LISA" class="btn btn-warning" />
             </div>
@@ -30,7 +32,7 @@
         <br />
 
         <div>
-            <a asp-action="Index" type="submit" value="TAGASI" class="btn btn-danger">TAGASI GALERIISSE</a>
+            <a asp-controller="Rooms" asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-danger">TAGASI</a>
         </div>
         <br />
     </section>

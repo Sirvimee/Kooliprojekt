@@ -110,7 +110,7 @@ namespace GameHouse.Controllers
 
             ViewBag.Rooms = rooms;
 
-            return View();
+            return View(booking);
         }
 
         // POST: Bookings/Edit/5
@@ -157,7 +157,7 @@ namespace GameHouse.Controllers
 
             ViewBag.Rooms = rooms;
 
-            return View();
+            return View(booking);
         }
 
         // GET: Bookings/Delete/5

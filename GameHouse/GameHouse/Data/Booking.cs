@@ -7,6 +7,9 @@ namespace GameHouse.Data
 {
     public class Booking
     {
+        private DateTime _relaseDate = DateTime.MinValue;
+
+
         [AutoIncrement]
         public int Id { get; set; }
 
@@ -15,9 +18,18 @@ namespace GameHouse.Data
         public int NameId { get; set; }
 
         [DisplayName("Kuupäev")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
-        public DateTime Date { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+        public DateTime Date
+        {
+            get
+            {
+                return (_relaseDate == DateTime.MinValue) ? DateTime.Now : _relaseDate;
+            }
+            set
+            {
+                _relaseDate = value;
+            }
+        }
 
         [DisplayName("Kellaaeg")]
         public string Time { get; set; }

@@ -4,16 +4,17 @@
     ViewData["Title"] = "Index";
     Layout = "Layout.cshtml";
 }
-
+<div class="container text-center">
+    <section>
+        <br />
+        <a asp-action="Create" type="submit" value="LISA" class="btn btn-warning text-center">LISA UUS</a>
+        <br />
+    </section>
+</div>
+<br />
 <div class="container">
     <main role="main" class="pb-3">
         <div>
-
-            <br />
-
-            <p style="text-align:center">
-                <a asp-action="Create">Lisa uus</a>
-            </p>
             <table class="table">
                 <thead>
                     <tr>
@@ -52,6 +53,7 @@
                                 <a asp-action="Edit" asp-route-id="@item.Id">Muuda</a> |
                                 <a asp-action="Details" asp-route-id="@item.Id">Vaata</a> |
                                 <a asp-action="Delete" asp-route-id="@item.Id">Kustuta</a>
+                                <a asp-controller="Galleries" asp-action="Index" asp-route-nameId="@item.Id">Galerii</a>
                             </td>
                         </tr>
                     }

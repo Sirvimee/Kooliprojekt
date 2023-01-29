@@ -52,7 +52,7 @@ namespace GameHouse.Migrations
 
                     b.HasIndex("NameId");
 
-                    b.ToTable("Booking");
+                    b.ToTable("Booking", (string)null);
                 });
 
             modelBuilder.Entity("GameHouse.Data.Gallery", b =>
@@ -73,7 +73,7 @@ namespace GameHouse.Migrations
 
                     b.HasIndex("NameId");
 
-                    b.ToTable("Gallery");
+                    b.ToTable("Gallery", (string)null);
                 });
 
             modelBuilder.Entity("GameHouse.Data.Room", b =>
@@ -98,7 +98,7 @@ namespace GameHouse.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Room");
+                    b.ToTable("Room", (string)null);
                 });
 
             modelBuilder.Entity("GameHouse.Data.Booking", b =>

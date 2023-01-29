@@ -10,7 +10,7 @@ namespace GameHouse.Data
         {
         }
 
-        public DbSet<GameHouse.Data.Room> Room { get; set; } = default!;
+        public DbSet<GameHouse.Data.Room> Room { get; set; } 
 
         public DbSet<GameHouse.Data.Booking> Booking { get; set; }
 

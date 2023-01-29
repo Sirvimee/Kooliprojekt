@@ -23,10 +23,19 @@ namespace GameHouse.Controllers
         }
 
         // GET: Galleries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int nameId)
         {
-            var applicationDbContext = _context.Gallery.Include(g => g.Name);
-            return View(await applicationDbContext.ToListAsync());
+            List<Gallery> list = await (from callItem in _context.Gallery
+                                        where callItem.NameId == nameId
+                                        select new Gallery
+                                        {
+                                            Id = callItem.Id,
+                                            ImageName = callItem.ImageName,
+                                            NameId = nameId
+                                        }).ToListAsync();
+
+            ViewBag.NameId = nameId;
+            return View(list);
         }
 
         // GET: Galleries/Details/5
@@ -49,10 +58,15 @@ namespace GameHouse.Controllers
         }
 
         // GET: Galleries/Create
-        public IActionResult Create()
+        public IActionResult Create(int nameId)
         {
-            ViewData["NameId"] = new SelectList(_context.Room, "Id", "Id");
-            return View();
+
+            Gallery gallery = new Gallery
+            {
+                NameId = nameId
+            };
+            //ViewData["NameId"] = new SelectList(_context.Room, "Id", "Name");
+            return View(gallery);
         }
 
         // POST: Galleries/Create
