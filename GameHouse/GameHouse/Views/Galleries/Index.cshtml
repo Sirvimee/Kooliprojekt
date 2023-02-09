@@ -7,7 +7,7 @@
 <div class="container text-center">
     <section>
         <br />
-        <a asp-action="Create" asp-route-nameId = "@ViewBag.NameId" type="submit" value="LISA" class="btn btn-warning text-center">LISA PILTE</a>
+        <a asp-action="Create" asp-route-roomId = "@ViewBag.RoomId" type="submit" value="LISA" class="btn btn-warning text-center">LISA PILTE</a>
         <a asp-controller="Rooms" asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-danger">TAGASI</a>
         <br />
     </section>
@@ -24,7 +24,7 @@
                 <div class="card-block">
                     <h5 class="card-title">@item.ImageName</h5>
                     <div class="text-truncate-container">
-                        <p>@item.Name</p>
+                        <p>@item.Room</p>
                         <a asp-action="Delete" asp-route-id="@item.Id">Kustuta</a>
                     </div>
                 </div>

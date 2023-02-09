@@ -31,7 +31,7 @@ namespace GameHouse.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NameId = table.Column<int>(type: "int", nullable: false),
+                    RoomId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Time = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContactName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -43,7 +43,7 @@ namespace GameHouse.Migrations
                     table.PrimaryKey("PK_Booking", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Booking_Room_NameId",
-                        column: x => x.NameId,
+                        column: x => x.RoomId,
                         principalTable: "Room",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -56,28 +56,28 @@ namespace GameHouse.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NameId = table.Column<int>(type: "int", nullable: false)
+                    RoomId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Gallery", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Gallery_Room_NameId",
-                        column: x => x.NameId,
+                        column: x => x.RoomId,
                         principalTable: "Room",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Booking_NameId",
+                name: "IX_Booking_RoomId",
                 table: "Booking",
-                column: "NameId");
+                column: "RoomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Gallery_NameId",
+                name: "IX_Gallery_RoomId",
                 table: "Gallery",
-                column: "NameId");
+                column: "RoomId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

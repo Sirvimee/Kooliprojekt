@@ -31,7 +31,7 @@ namespace GameHouse.Data
 
         public IList<Booking> Bookings { get; set; }
 
-        [ForeignKey("NameId")]
+        [ForeignKey("RoomId")]
         public ICollection<Gallery> Galleries { get; set; }
 
         //public Room()

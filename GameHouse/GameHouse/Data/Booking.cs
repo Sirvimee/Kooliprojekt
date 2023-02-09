@@ -14,8 +14,8 @@ namespace GameHouse.Data
         public int Id { get; set; }
 
         [DisplayName("Tuba")]
-        public Room Name { get; set; }
-        public int NameId { get; set; }
+        public Room Room { get; set; }
+        public int RoomId { get; set; }
 
         [DisplayName("Kuupäev")]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]

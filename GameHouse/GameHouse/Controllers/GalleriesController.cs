@@ -23,18 +23,18 @@ namespace GameHouse.Controllers
         }
 
         // GET: Galleries
-        public async Task<IActionResult> Index(int nameId)
+        public async Task<IActionResult> Index(int roomId)
         {
             List<Gallery> list = await (from callItem in _context.Gallery
-                                        where callItem.NameId == nameId
+                                        where callItem.RoomId == roomId
                                         select new Gallery
                                         {
                                             Id = callItem.Id,
                                             ImageName = callItem.ImageName,
-                                            NameId = nameId
+                                            RoomId = roomId
                                         }).ToListAsync();
 
-            ViewBag.NameId = nameId;
+            ViewBag.RoomId = roomId;
             return View(list);
         }
 
@@ -47,7 +47,7 @@ namespace GameHouse.Controllers
             }
 
             var gallery = await _context.Gallery
-                .Include(g => g.Name)
+                .Include(g => g.Room.Name)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (gallery == null)
             {
@@ -58,14 +58,14 @@ namespace GameHouse.Controllers
         }
 
         // GET: Galleries/Create
-        public IActionResult Create(int nameId)
+        public IActionResult Create(int roomId)
         {
 
             Gallery gallery = new Gallery
             {
-                NameId = nameId
+                RoomId = roomId
             };
-            //ViewData["NameId"] = new SelectList(_context.Room, "Id", "Name");
+            //ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Name");
             return View(gallery);
         }
 
@@ -74,7 +74,7 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("NameId,ImageFile")] Gallery gallery, IFormFile file)
+        public async Task<IActionResult> Create([Bind("RoomId,ImageFile")] Gallery gallery, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace GameHouse.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NameId"] = new SelectList(_context.Room, "Id", "Id", gallery.NameId);
+            ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
             return View(gallery);
         }
 
@@ -122,7 +122,7 @@ namespace GameHouse.Controllers
             {
                 return NotFound();
             }
-            ViewData["NameId"] = new SelectList(_context.Room, "Id", "Id", gallery.NameId);
+            ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
             return View(gallery);
         }
 
@@ -131,7 +131,7 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NameId,ImageFile")] Gallery gallery)
+        public async Task<IActionResult> Edit(int id, [Bind("RoomId,ImageFile")] Gallery gallery)
         {
             if (id != gallery.Id)
             {
@@ -158,7 +158,7 @@ namespace GameHouse.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["NameId"] = new SelectList(_context.Room, "Id", "Id", gallery.NameId);
+            ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
             return View(gallery);
         }
 
@@ -171,7 +171,7 @@ namespace GameHouse.Controllers
             }
 
             var gallery = await _context.Gallery
-                .Include(g => g.Name)
+                .Include(g => g.Room)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (gallery == null)
             {

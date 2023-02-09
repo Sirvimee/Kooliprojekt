@@ -18,8 +18,8 @@ namespace GameHouse.Data
         public IFormFile ImageFile { get; set; }
 
         [DisplayName("Tuba")]
-        public Room Name { get; set; }
-        public int NameId { get; set; }
+        public Room Room { get; set; }
+        public int RoomId { get; set; }
 
     }
 }

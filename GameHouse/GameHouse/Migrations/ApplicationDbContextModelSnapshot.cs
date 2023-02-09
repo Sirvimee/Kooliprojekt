@@ -50,7 +50,7 @@ namespace GameHouse.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NameId");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Booking", (string)null);
                 });
@@ -66,12 +66,12 @@ namespace GameHouse.Migrations
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NameId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NameId");
+                    b.HasIndex("RoomId");
 
                     b.ToTable("Gallery", (string)null);
                 });
@@ -103,24 +103,24 @@ namespace GameHouse.Migrations
 
             modelBuilder.Entity("GameHouse.Data.Booking", b =>
                 {
-                    b.HasOne("GameHouse.Data.Room", "Name")
+                    b.HasOne("GameHouse.Data.Room", "Room")
                         .WithMany("Bookings")
-                        .HasForeignKey("NameId")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Name");
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("GameHouse.Data.Gallery", b =>
                 {
-                    b.HasOne("GameHouse.Data.Room", "Name")
+                    b.HasOne("GameHouse.Data.Room", "Room")
                         .WithMany("Galleries")
-                        .HasForeignKey("NameId")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Name");
+                    b.Navigation("Room");
                 });
 
             modelBuilder.Entity("GameHouse.Data.Room", b =>

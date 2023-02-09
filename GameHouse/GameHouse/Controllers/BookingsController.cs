@@ -17,7 +17,7 @@ namespace GameHouse.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var bookingContext = _context.Booking.Include(b => b.Name);
+            var bookingContext = _context.Booking.Include(b => b.Room.Name);
             return View(await bookingContext.ToListAsync());
         }
 
@@ -30,7 +30,7 @@ namespace GameHouse.Controllers
             }
 
             var booking = await _context.Booking
-                .Include(b => b.Name)
+                .Include(b => b.Room.Name)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
@@ -62,7 +62,7 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NameId,Date,Time,ContactName,Email,Phone")] Booking booking)
+        public async Task<IActionResult> Create([Bind("Id,RoomId,Date,Time,ContactName,Email,Phone")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -118,7 +118,7 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NameId,Date,Time,ContactName,Email,Phone")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RoomId,Date,Time,ContactName,Email,Phone")] Booking booking)
         {
             if (id != booking.Id)
             {
@@ -169,7 +169,7 @@ namespace GameHouse.Controllers
             }
 
             var booking = await _context.Booking
-                .Include(b => b.Name)
+                .Include(b => b.Room.Name)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
