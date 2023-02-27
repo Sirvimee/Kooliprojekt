@@ -1,38 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GameHouse.Data;
-using System.Drawing;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using GameHouse.Services;
 
 namespace GameHouse.Controllers
 {
     public class GalleriesController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IGalleriesService _galleriesService;
         private readonly IWebHostEnvironment _environment;
 
-        public GalleriesController(ApplicationDbContext context, IWebHostEnvironment environment)
+        public GalleriesController(IGalleriesService galleriesService, IWebHostEnvironment environment)
         {
-            _context = context;
+            _galleriesService = galleriesService;
             _environment = environment;
         }
 
         // GET: Galleries
         public async Task<IActionResult> Index(int roomId)
         {
-            List<Gallery> list = await (from callItem in _context.Gallery
-                                        where callItem.RoomId == roomId
-                                        select new Gallery
-                                        {
-                                            Id = callItem.Id,
-                                            ImageName = callItem.ImageName,
-                                            RoomId = roomId
-                                        }).ToListAsync();
+            List<Gallery> list = await _galleriesService.Get(roomId);
 
             ViewBag.RoomId = roomId;
             return View(list);
@@ -41,14 +29,12 @@ namespace GameHouse.Controllers
         // GET: Galleries/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Gallery == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var gallery = await _context.Gallery
-                .Include(g => g.Room.Name)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var gallery = await _galleriesService.GetById(id.Value);
             if (gallery == null)
             {
                 return NotFound();
@@ -65,7 +51,6 @@ namespace GameHouse.Controllers
             {
                 RoomId = roomId
             };
-            //ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Name");
             return View(gallery);
         }
 
@@ -91,38 +76,35 @@ namespace GameHouse.Controllers
                     {
                         await gallery.ImageFile.CopyToAsync(fileStream);
                     }
-                    _context.Add(gallery);
+
+                    await _galleriesService.Save(gallery);
                 }
                 else
                 {
-                    _context.Update(gallery);
+                   await _galleriesService.Update(gallery);
 
                 }
 
-                //await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
-                //_context.Add(gallery);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
+           // ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
             return View(gallery);
         }
 
         // GET: Galleries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Gallery == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var gallery = await _context.Gallery.FindAsync(id);
+            var gallery = await _galleriesService.GetById(id.Value);
             if (gallery == null)
             {
                 return NotFound();
             }
-            ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
+            //ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
             return View(gallery);
         }
 
@@ -140,39 +122,22 @@ namespace GameHouse.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(gallery);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!GalleryExists(gallery.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _galleriesService.Update(gallery);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
+            //ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
             return View(gallery);
         }
 
         // GET: Galleries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Gallery == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var gallery = await _context.Gallery
-                .Include(g => g.Room)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var gallery = await _galleriesService.GetById(id.Value);
             if (gallery == null)
             {
                 return NotFound();
@@ -186,23 +151,14 @@ namespace GameHouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Gallery == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Gallery'  is null.");
-            }
-            var gallery = await _context.Gallery.FindAsync(id);
-            if (gallery != null)
-            {
-                _context.Gallery.Remove(gallery);
-            }
-            
-            await _context.SaveChangesAsync();
+            await _galleriesService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GalleryExists(int id)
-        {
-          return _context.Gallery.Any(e => e.Id == id);
-        }
+        //private bool GalleryExists(int id)
+        //{
+        //  return _galleriesService.Get(e => e.Id == id);
+        //}
+
     }
 }

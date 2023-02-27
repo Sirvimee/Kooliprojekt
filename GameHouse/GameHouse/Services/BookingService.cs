@@ -33,6 +33,11 @@ namespace GameHouse.Services
             await _bookingRepository.Save(booking);
         }
 
+        public async Task Update(Booking booking)
+        {
+            await _bookingRepository.Update(booking);
+        }
+
         public async Task Delete(int? id)
         {
             await _bookingRepository.Delete(id);

@@ -16,13 +16,13 @@ namespace GameHouse.Repositories
 
         public async Task<Booking> Get(int id)
         {
-            return await _context.Booking.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Booking.Include(b => b.Room).FirstOrDefaultAsync(x => x.Id == id);
 
         }
 
         public async Task<IList<Booking>> List()
         {
-            return await _context.Booking.ToListAsync();
+            return await _context.Booking.Include(b => b.Room).ToListAsync();
         }
 
         public List<SelectListItem> GetRoomDropdownList()
@@ -38,6 +38,7 @@ namespace GameHouse.Repositories
 
         public async Task Save(Booking booking)
         {
+
             if (booking.Id == 0)
             {
                 await _context.AddAsync(booking);

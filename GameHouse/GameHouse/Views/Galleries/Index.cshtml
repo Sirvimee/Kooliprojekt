@@ -24,14 +24,36 @@
                 <div class="card-block">
                     <h5 class="card-title">@item.ImageName</h5>
                     <div class="text-truncate-container">
-                        <p>@item.Room</p>
+                        <p>@item.Room.Name</p>
+                        <p>@item.Room.Description</p>
+                        <p>@item.Room.Price</p>
                         <a asp-action="Delete" asp-route-id="@item.Id">Kustuta</a>
                     </div>
                 </div>
             </div>
         </div>
     }
+</div><br />
+
+@*<div style="display:flex;justify-content:center;flex-direction:row;flex-wrap:wrap;gap:2em">
+    @foreach (var item in Model)
+    {
+        int i = 0;
+
+        for (i = 0; i <= 0; i++) {
+            <div class="card border-white" style="width: 20rem;">
+                <div class="card-block">
+                    <div class="card-block">
+                        <div class="text-truncate-container">
+                            <p>@item.Room.Name</p>
+                            <p>@item.Room.Description</p>
+                            <p>@item.Room.Price</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            i = -1;
+        }
+    }
 </div>
-<br />
-
-
+<br />*@

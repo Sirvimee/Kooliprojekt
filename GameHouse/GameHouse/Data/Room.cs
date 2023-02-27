@@ -34,11 +34,11 @@ namespace GameHouse.Data
         [ForeignKey("RoomId")]
         public ICollection<Gallery> Galleries { get; set; }
 
-        //public Room()
-        //{
-        //    Bookings = new List<Booking>();
-        //    Galleries = new List<Gallery>();
-        //}
+        public Room()
+        {
+            Bookings = new List<Booking>();
+            Galleries = new List<Gallery>();
+        }
 
     }
 }

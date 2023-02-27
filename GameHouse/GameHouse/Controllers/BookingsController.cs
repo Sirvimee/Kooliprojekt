@@ -1,4 +1,5 @@
 ﻿using GameHouse.Data;
+using GameHouse.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,31 +8,29 @@ namespace GameHouse.Controllers
 {
     public class BookingsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IBookingService _bookingService;
 
-        public BookingsController(ApplicationDbContext context)
+        public BookingsController(IBookingService bookingService)
         {
-            _context = context;
+            _bookingService = bookingService;
         }
 
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var bookingContext = _context.Booking.Include(b => b.Room.Name);
-            return View(await bookingContext.ToListAsync());
+            var result = await _bookingService.List();
+            return View(result);
         }
 
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Booking == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Booking
-                .Include(b => b.Room.Name)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var booking = await _bookingService.Get(id.Value);
             if (booking == null)
             {
                 return NotFound();
@@ -40,20 +39,15 @@ namespace GameHouse.Controllers
             return View(booking);
         }
 
+        //SIIT JÄI POOLELI *********************************************************************************************************************
+
         // GET: Bookings/Create
         public async Task<IActionResult> Create()
+
         {
-            var rooms = await _context.Room
-                                         .OrderBy(room => room.Name)
-                                         .Select(room => new SelectListItem
-                                         {
-                                             Value = room.Id.ToString(),
-                                             Text = room.Name
-                                         })
-                                       .ToListAsync();
+            var rooms = await _bookingService.GetRoomDropdownList();
 
             ViewBag.Rooms = rooms;
-
             return View();
         }
 
@@ -62,25 +56,17 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RoomId,Date,Time,ContactName,Email,Phone")] Booking booking)
+        public async Task<IActionResult> Create(Booking booking)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(booking);
-                await _context.SaveChangesAsync();
+                await _bookingService.Save(booking);
                 return RedirectToAction(nameof(Index));
             }
 
-            var rooms = await _context.Room
-                                         .OrderBy(room => room.Name)
-                                         .Select(room => new SelectListItem
-                                         {
-                                             Value = room.Id.ToString(),
-                                             Text = room.Name
-                                         })
-                                       .ToListAsync();
+            //var rooms = await _bookingService.GetRoomDropdownList();
 
-            ViewBag.Rooms = rooms;
+            //ViewBag.Rooms = rooms;
 
             return View();
         }
@@ -88,28 +74,20 @@ namespace GameHouse.Controllers
         // GET: Bookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Booking == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Booking.FindAsync(id);
+            var booking = await _bookingService.Get(id.Value);
             if (booking == null)
             {
                 return NotFound();
             }
 
-            var rooms = await _context.Room
-                                         .OrderBy(room => room.Name)
-                                         .Select(room => new SelectListItem
-                                         {
-                                             Value = room.Id.ToString(),
-                                             Text = room.Name
-                                         })
-                                       .ToListAsync();
+            var rooms = await _bookingService.GetRoomDropdownList();
 
             ViewBag.Rooms = rooms;
-
             return View(booking);
         }
 
@@ -118,7 +96,7 @@ namespace GameHouse.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RoomId,Date,Time,ContactName,Email,Phone")] Booking booking)
+        public async Task<IActionResult> Edit(int id, Booking booking)
         {
             if (id != booking.Id)
             {
@@ -127,50 +105,25 @@ namespace GameHouse.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(booking);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookingExists(booking.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                await _bookingService.Update(booking);
                 return RedirectToAction(nameof(Index));
             }
 
-            var rooms = await _context.Room
-                                         .OrderBy(room => room.Name)
-                                         .Select(room => new SelectListItem
-                                         {
-                                             Value = room.Id.ToString(),
-                                             Text = room.Name
-                                         })
-                                       .ToListAsync();
+            var rooms = await _bookingService.GetRoomDropdownList();
 
             ViewBag.Rooms = rooms;
-
             return View(booking);
         }
 
         // GET: Bookings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Booking == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Booking
-                .Include(b => b.Room.Name)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var booking = await _bookingService.Get(id.Value);
             if (booking == null)
             {
                 return NotFound();
@@ -184,23 +137,13 @@ namespace GameHouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Booking == null)
-            {
-                return Problem("Entity set 'BookingContext.Booking'  is null.");
-            }
-            var booking = await _context.Booking.FindAsync(id);
-            if (booking != null)
-            {
-                _context.Booking.Remove(booking);
-            }
-
-            await _context.SaveChangesAsync();
+            await _bookingService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookingExists(int id)
-        {
-            return _context.Booking.Any(e => e.Id == id);
-        }
+        //private bool BookingExists(int id)
+        //{
+        //    return _context.Booking.Any(e => e.Id == id);
+        //}
     }
 }
