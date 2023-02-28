@@ -39,8 +39,6 @@ namespace GameHouse.Controllers
             return View(booking);
         }
 
-        //SIIT JÄI POOLELI *********************************************************************************************************************
-
         // GET: Bookings/Create
         public async Task<IActionResult> Create()
 

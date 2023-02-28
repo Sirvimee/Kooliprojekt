@@ -31,7 +31,7 @@
                             <p>@item.Description</p>
                         </div>
 
-                        <a class="navButton" asp-action="Details" asp-route-id="@item.Id">Vaata lähemalt</a>
+                        <a class="navButton" asp-controller="Galleries" asp-action="Index" asp-route-roomId="@item.Id">Vaata lähemalt</a>
                         @if (signInManager.IsSignedIn(User))
                         {
                             <a asp-action="Edit" asp-route-id="@item.Id">Muuda</a>

@@ -1,4 +1,5 @@
 ﻿using GameHouse.Data;
+using GameHouse.Models;
 using GameHouse.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

@@ -1,59 +1,60 @@
 ﻿@model IEnumerable<GameHouse.Data.Gallery>
+@using GameHouse.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> signInManager
+@inject UserManager<ApplicationUser> userManager
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="container text-center">
-    <section>
-        <br />
-        <a asp-action="Create" asp-route-roomId = "@ViewBag.RoomId" type="submit" value="LISA" class="btn btn-warning text-center">LISA PILTE</a>
-        <a asp-controller="Rooms" asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-danger">TAGASI</a>
-        <br />
-    </section>
-</div>
 <br />
-<div style="display:flex;justify-content:center;flex-direction:row;flex-wrap:wrap;gap:2em">
-    @foreach (var item in Model)
-    {
-        var imagePath = "images/" + (item.ImageName);
+<div class="container">
+    <div style="display:flex;justify-content:center;flex-direction:row;flex-wrap:wrap;gap:2em">
+        @foreach (var item in Model)
+        {
+            var imagePath = "images/" + (item.ImageName);
 
-        <div class="card border-white" style="width: 20rem;">
-            <div class="card-block">
-                <img src=@imagePath class="card-img-top" alt="...">
-                <div class="card-block">
-                    <h5 class="card-title">@item.ImageName</h5>
-                    <div class="text-truncate-container">
-                        <p>@item.Room.Name</p>
-                        <p>@item.Room.Description</p>
-                        <p>@item.Room.Price</p>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Kustuta</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div><br />
-
-@*<div style="display:flex;justify-content:center;flex-direction:row;flex-wrap:wrap;gap:2em">
-    @foreach (var item in Model)
-    {
-        int i = 0;
-
-        for (i = 0; i <= 0; i++) {
             <div class="card border-white" style="width: 20rem;">
                 <div class="card-block">
+                    <img src=@imagePath class="card-img-top" alt="...">
                     <div class="card-block">
-                        <div class="text-truncate-container">
-                            <p>@item.Room.Name</p>
-                            <p>@item.Room.Description</p>
-                            <p>@item.Room.Price</p>
-                        </div>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <h5 class="card-title">@item.ImageName</h5>
+                            <a asp-action="Delete" asp-route-id="@item.Id">Kustuta</a>
+                        }
                     </div>
                 </div>
             </div>
-            i = -1;
         }
-    }
+    </div>
+</div><br />
+
+<div class="container">
+    <main role="main" class="pb-3">
+        @foreach (var item in Model.Take(1))
+        {
+            <div class="text-center">
+                <h4 class="title">@item.Room.Name</h4>
+                <p class="body">@item.Room.Description</p>
+                <p class="price">@item.Room.Price</p>
+            </div>
+            <div class="text-center">
+                <form method="post">
+                    <input asp-controller="Bookings" asp-action="Index" type="submit" value="BRONEERI" class="btn btn-warning">
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        <input asp-controller="Rooms" asp-action="AdminRooms" type="submit" value="TAGASI NIMEKIRJA" class="btn btn-danger">
+                        <a asp-action="Create" asp-route-roomId = "@ViewBag.RoomId" type="submit" value="LISA" class="btn btn-warning text-center">LISA PILTE</a>
+                    }
+                    else
+                    {
+                        <input asp-controller="Rooms" asp-action="Index" type="submit" value="TAGASI" class="btn btn-danger">
+                    }
+                </form>
+            </div>
+        }
+    </main>
 </div>
-<br />*@
+<br />

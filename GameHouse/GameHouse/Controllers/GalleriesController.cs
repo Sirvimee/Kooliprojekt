@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using GameHouse.Data;
 using GameHouse.Services;
+
 
 namespace GameHouse.Controllers
 {
@@ -10,11 +9,13 @@ namespace GameHouse.Controllers
     {
         private readonly IGalleriesService _galleriesService;
         private readonly IWebHostEnvironment _environment;
+        private readonly IRoomService _roomService;
 
-        public GalleriesController(IGalleriesService galleriesService, IWebHostEnvironment environment)
+        public GalleriesController(IGalleriesService galleriesService, IRoomService roomService, IWebHostEnvironment environment)
         {
             _galleriesService = galleriesService;
             _environment = environment;
+            _roomService = roomService;
         }
 
         // GET: Galleries
@@ -85,10 +86,10 @@ namespace GameHouse.Controllers
 
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AdminRooms));
             }
-           // ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
-            return View(gallery);
+            // ViewData["RoomId"] = new SelectList(_context.Room, "Id", "Id", gallery.RoomId);
+            return RedirectToAction(nameof(AdminRooms));
         }
 
         // GET: Galleries/Edit/5
@@ -152,13 +153,14 @@ namespace GameHouse.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _galleriesService.Delete(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AdminRooms));
         }
 
-        //private bool GalleryExists(int id)
-        //{
-        //  return _galleriesService.Get(e => e.Id == id);
-        //}
+        public async Task<IActionResult> AdminRooms()
+        {
+            var result = await _roomService.List();
+            return View(result);
+        }
 
     }
 }
