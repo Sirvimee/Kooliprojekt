@@ -12,5 +12,6 @@ Samas saab ta ka kustuda broneeringuid. Ja ta saab ka lisada uusi rakenduse admi
 
 ## Andmed sisselogimiseks (rakenduse proovimiseks)
 
-Kasutajanimi: email@email.ee
-<br>Parool: Par00l!
+Esmase kasutaja saab registreerida siin:
+https://localhost:7243/Identity/Account/Login
+See on ainult rakenduse arendamise ajal aktiivne, hiljem sellele lingile ligi ei saa, kui pole sisse logitud.
