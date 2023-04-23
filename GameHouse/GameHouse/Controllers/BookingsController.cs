@@ -3,16 +3,19 @@ using GameHouse.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ServiceStack;
 
 namespace GameHouse.Controllers
 {
     public class BookingsController : Controller
     {
         private readonly IBookingService _bookingService;
+        private readonly IRoomService _roomService;
 
-        public BookingsController(IBookingService bookingService)
+        public BookingsController(IBookingService bookingService, IRoomService roomService)
         {
             _bookingService = bookingService;
+            _roomService = roomService;
         }
 
         // GET: Bookings
@@ -44,8 +47,11 @@ namespace GameHouse.Controllers
 
         {
             var rooms = await _bookingService.GetRoomDropdownList();
-
             ViewBag.Rooms = rooms;
+
+            var times = _bookingService.GetTimeDropdownList();
+            ViewBag.Times = times;
+
             return View();
         }
 

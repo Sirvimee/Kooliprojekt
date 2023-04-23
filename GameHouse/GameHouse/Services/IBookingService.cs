@@ -8,6 +8,7 @@ namespace GameHouse.Services
         Task<Booking> Get(int id);
         Task<IList<Booking>> List();
         Task<List<SelectListItem>> GetRoomDropdownList();
+        List<SelectListItem> GetTimeDropdownList();
         Task Save(Booking booking);
         Task Update(Booking booking);
         Task Delete(int? id);

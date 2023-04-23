@@ -36,13 +36,19 @@
             </div>
             <br />
             <div class="form-group">
-                <input type="submit" value="SALVESTA" class="btn btn-warning" />
+                <label class="control-label">Lae uus pilt</label><br />
+                <input asp-for="ImageFile" class="form-control text-center" accept=" image /*" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="SALVESTA" class="btn btn-danger" />
             </div>
         </form>
 
         <br />
         <div>
-            <a asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-danger">TAGASI NIMEKIRJA</a>
+            <a asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-warning">TAGASI NIMEKIRJA</a>
         </div>
 
         <br />

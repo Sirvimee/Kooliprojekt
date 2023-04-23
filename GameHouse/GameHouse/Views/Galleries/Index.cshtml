@@ -41,8 +41,8 @@
                 <p class="price">@item.Room.Price</p>
             </div>
             <div class="text-center">
-                <form method="post">
-                    <input asp-controller="Bookings" asp-action="Index" type="submit" value="BRONEERI" class="btn btn-warning">
+                <form method="get">
+                    <input asp-controller="Bookings" asp-action="Create" type="submit" value="BRONEERI" class="btn btn-warning">
                     @if (signInManager.IsSignedIn(User))
                     {
                         <input asp-controller="Rooms" asp-action="AdminRooms" type="submit" value="TAGASI NIMEKIRJA" class="btn btn-danger">

@@ -9,10 +9,12 @@ namespace GameHouse.Controllers
     public class RoomsController : Controller
     {
         private readonly IRoomService _roomService;
+        private readonly IGalleriesService _galleriesService;
 
-        public RoomsController(IRoomService roomService)
+        public RoomsController(IRoomService roomService, IGalleriesService galleriesService)
         {
             _roomService = roomService;
+            _galleriesService = galleriesService;
         }
 
         // GET: Rooms
@@ -90,7 +92,7 @@ namespace GameHouse.Controllers
 
             if (ModelState.IsValid)
             {
-                await _roomService.Save(room);
+                await _roomService.Update(room);
                 return RedirectToAction(nameof(Index));
             }
             return View(room);

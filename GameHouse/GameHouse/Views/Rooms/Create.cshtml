@@ -8,7 +8,6 @@
 <br />
 <div class="container text-center">
     <section>
-
         <form asp-action="Create" id="account" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -38,13 +37,13 @@
             </div>
             <br />
             <div class="form-group text-center">
-                <input type="submit" value="LISA" class="btn btn-warning" />
+                <input type="submit" value="LISA" class="btn btn-danger" />
             </div>
         </form>
         <br />
 
         <div>
-            <a asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-danger">TAGASI NIMEKIRJA</a>
+            <a asp-action="AdminRooms" type="submit" value="TAGASI" class="btn btn-warning">TAGASI NIMEKIRJA</a>
         </div>
         <br />
     </section>

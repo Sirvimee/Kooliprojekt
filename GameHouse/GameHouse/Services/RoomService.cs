@@ -28,6 +28,11 @@ namespace GameHouse.Services
             await _roomRepository.Save(room);
         }
 
+        public async Task Update(Room room)
+        {
+            await _roomRepository.Update(room);
+        }
+
         public async Task Delete(int? id)
         {
             await _roomRepository.Delete(id);

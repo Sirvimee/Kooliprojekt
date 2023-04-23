@@ -71,7 +71,7 @@ namespace GameHouse.Controllers
                     string wwwRootPath = _environment.WebRootPath;
                     string fileName = Path.GetFileNameWithoutExtension(gallery.ImageFile.FileName);
                     string extension = Path.GetExtension(gallery.ImageFile.FileName);
-                    gallery.ImageName = fileName = fileName + extension;
+                    gallery.ImageName = fileName = fileName + "-" + DateTime.Now.ToString("yyyy-MM-dd") + extension;
                     string path = Path.Combine(wwwRootPath + "/images/", fileName);
                     using (var fileStream = new FileStream(path, FileMode.Create))
                     {
@@ -143,7 +143,7 @@ namespace GameHouse.Controllers
             {
                 return NotFound();
             }
-
+            
             return View(gallery);
         }
 
