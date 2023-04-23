@@ -152,7 +152,20 @@ namespace GameHouse.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+
+            // delete image file
+            var gallery = await _galleriesService.GetById(id);
+            string wwwRootPath = _environment.WebRootPath;
+            string fileName = gallery.ImageName;
+            string path = Path.Combine(wwwRootPath + "/images/", fileName);
+
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+
             await _galleriesService.Delete(id);
+
             return RedirectToAction(nameof(AdminRooms));
         }
 

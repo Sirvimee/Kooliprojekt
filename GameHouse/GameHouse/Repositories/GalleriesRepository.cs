@@ -52,6 +52,7 @@ namespace GameHouse.Repositories
         public async Task Delete(int? id)
         {
             var gallery = await _context.Gallery.FindAsync(id);
+            
             if (gallery == null)
             {
                 return;
