@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameHouse", "GameHouse\GameHouse.csproj", "{0CD7AFD5-9DCA-4991-B339-E79116DF15EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameHouse", "GameHouse\GameHouse.csproj", "{0CD7AFD5-9DCA-4991-B339-E79116DF15EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameHouse.Tests", "GameHouse.Tests\GameHouse.Tests.csproj", "{2F37B60E-CC5D-497F-87D1-C79C8D97A5E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0CD7AFD5-9DCA-4991-B339-E79116DF15EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD7AFD5-9DCA-4991-B339-E79116DF15EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CD7AFD5-9DCA-4991-B339-E79116DF15EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F37B60E-CC5D-497F-87D1-C79C8D97A5E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F37B60E-CC5D-497F-87D1-C79C8D97A5E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F37B60E-CC5D-497F-87D1-C79C8D97A5E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F37B60E-CC5D-497F-87D1-C79C8D97A5E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
