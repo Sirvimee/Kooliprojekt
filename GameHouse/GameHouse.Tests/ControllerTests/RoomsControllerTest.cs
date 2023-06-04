@@ -1,61 +1,100 @@
-﻿using FakeItEasy;
-using FluentAssertions;
-using GameHouse.Controllers;
+﻿using GameHouse.Controllers;
 using GameHouse.Data;
 using GameHouse.Services;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Moq;
 
-namespace GameHouse.Tests.ControllerTests
+namespace GameHouse.Tests.Controllers
 {
-    public class RoomsControllerTest
+    public class RoomsControllerTests
     {
-        private RoomsController _roomsController;
-        private IRoomService _roomService;
-        private IGalleriesService _galleriesService;
-        public RoomsControllerTest()
-        {
-            //Dependencies
-            _roomService = A.Fake<IRoomService>();
-            _galleriesService = A.Fake<IGalleriesService>();
+        private readonly RoomsController _controller;
+        private readonly Mock<IRoomService> _roomServiceMock;
+        private readonly Mock<IGalleriesService> _galleriesServiceMock;
 
-            //SUT
-            _roomsController = new RoomsController(_roomService, _galleriesService);
+        public RoomsControllerTests()
+        {
+            _roomServiceMock = new Mock<IRoomService>();
+            _galleriesServiceMock = new Mock<IGalleriesService>();
+
+            _controller = new RoomsController(_roomServiceMock.Object, _galleriesServiceMock.Object);
         }
 
         [Fact]
-        public void RoomsController_Index_ReturnsSuccess()
+        public async Task Index_ReturnsViewResultWithRooms()
         {
-            //Arrange - What do i need to bring in?
-            var rooms = A.Fake<IList<Room>>();
-            A.CallTo(() => _roomService.List()).Returns(rooms);
+            // Arrange
+            var rooms = new List<Room> { new Room { Id = 1, Name = "Room 1" }, new Room { Id = 2, Name = "Room 2" } };
+            _roomServiceMock.Setup(s => s.List()).ReturnsAsync(rooms);
 
-            //Act - What am i testing?
-            var result = _roomsController.Index();
+            // Act
+            var result = await _controller.Index();
 
-            //Assert - Did it work?
-            result.Should().BeOfType <Task<IActionResult>>();
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<List<Room>>(viewResult.ViewData.Model);
+            Assert.Equal(rooms, model);
         }
 
         [Fact]
-        public void RoomsController_Details_ReturnsSuccess()
+        public async Task Details_WithId_ReturnsViewResultWithRoom()
         {
-            //Arrange
-            var id = 1;
-            var room = A.Fake<Room>();
-            A.CallTo(() => _roomService.Get(id)).Returns(room);
-            
-            //Act 
-            var result = _roomsController.Details(id);
+            // Arrange
+            var room = new Room { Id = 1, Name = "Room 1" };
+            _roomServiceMock.Setup(s => s.Get(1)).ReturnsAsync(room);
 
-            //Assert
-            result.Should().BeOfType<Task<IActionResult>>();
+            // Act
+            var result = await _controller.Details(1);
 
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<Room>(viewResult.ViewData.Model);
+            Assert.Equal(room, model);
         }
 
+        [Fact]
+        public async Task Create_ReturnsViewResultWithRoom()
+        {
+            // Arrange
+            var room = new Room { Name = "New Room" };
+            _roomServiceMock.Setup(s => s.Save(room)).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.Create(room);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<Room>(viewResult.ViewData.Model);
+            Assert.Equal(room, model);
+        }
+
+        [Fact]
+        public async Task Edit_WithId_RedirectsToIndex()
+        {
+            // Arrange
+            var room = new Room { Id = 1, Name = "Updated Room" };
+            _roomServiceMock.Setup(s => s.Update(room)).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.Edit(1, room);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
+        }
+
+        [Fact]
+        public async Task Delete_WithId_RedirectsToIndex()
+        {
+            // Arrange
+            _roomServiceMock.Setup(s => s.Delete(1)).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.DeleteConfirmed(1);
+
+            // Assert
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectResult.ActionName);
+        }
     }
 }

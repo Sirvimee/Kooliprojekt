@@ -1,66 +1,113 @@
-﻿using FakeItEasy;
-using FluentAssertions;
-using GameHouse.Controllers;
+﻿using GameHouse.Controllers;
 using GameHouse.Data;
 using GameHouse.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Moq;
 
-namespace GameHouse.Tests.ControllerTests
+namespace GameHouse.Tests.Controllers
 {
-    public class GalleriesControllerTest
+    public class GalleriesControllerTests
     {
-        private readonly GalleriesController _galleriesController;
-        private readonly IGalleriesService _galleriesService;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IRoomService _roomService;
+        private readonly GalleriesController _controller;
+        private readonly Mock<IGalleriesService> _galleriesServiceMock;
+        private readonly Mock<IRoomService> _roomServiceMock;
+        private readonly Mock<IWebHostEnvironment> _environmentMock;
 
-        public GalleriesControllerTest()
+        public GalleriesControllerTests()
         {
-            _galleriesService = A.Fake<IGalleriesService>();
-            _roomService = A.Fake<IRoomService>();
-            _galleriesController = new GalleriesController(_galleriesService, _roomService, _webHostEnvironment);
+            _galleriesServiceMock = new Mock<IGalleriesService>();
+            _roomServiceMock = new Mock<IRoomService>();
+            _environmentMock = new Mock<IWebHostEnvironment>();
+
+            _controller = new GalleriesController(
+                _galleriesServiceMock.Object,
+                _roomServiceMock.Object,
+                _environmentMock.Object
+            );
         }
 
         [Fact]
-        public async Task GalleriesController_Index_ReturnsSuccessAsync()
+        public async Task Index_ReturnsViewResultWithGalleries()
         {
-            //Arrange
-            int roomId = 123;
-            var galleries = new List<Gallery> { new Gallery { Id = 1 }, new Gallery { Id = 2 } };
-            A.CallTo(() => _galleriesService.Get(roomId)).Returns(galleries);
+            // Arrange
+            var roomId = 1;
+            var galleries = new List<Gallery> { new Gallery { Id = 1, RoomId = roomId }, new Gallery { Id = 2, RoomId = roomId } };
+            _galleriesServiceMock.Setup(s => s.Get(roomId)).ReturnsAsync(galleries);
 
-            //Act
-            var result = _galleriesService.Get(roomId);
+            // Act
+            var result = await _controller.Index(roomId);
 
-            //Assert
-            var resultTask = _galleriesService.Get(roomId);
-            resultTask.Should().NotBeNull();
-            resultTask.Should().BeAssignableTo<Task<List<Gallery>>>();
-            var res = await resultTask;
-            res.Should().NotBeNull();
-            res.Should().BeOfType<List<Gallery>>();
-            res.Should().BeEquivalentTo(galleries);
-
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<List<Gallery>>(viewResult.ViewData.Model);
+            Assert.Equal(galleries, model);
         }
 
+        [Fact]
+        public async Task Details_WithId_ReturnsViewResultWithGallery()
+        {
+            // Arrange
+            var galleryId = 1;
+            var gallery = new Gallery { Id = galleryId };
+            _galleriesServiceMock.Setup(s => s.GetById(galleryId)).ReturnsAsync(gallery);
+
+            // Act
+            var result = await _controller.Details(galleryId);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<Gallery>(viewResult.ViewData.Model);
+            Assert.Equal(gallery, model);
+        }
 
         [Fact]
-        public void GalleriesController_Details_ReturnsSuccess()
+        public void Create_WithRoomId_ReturnsViewResultWithGallery()
         {
-            //Arrange
-            var id = 1;
-            var gallery = A.Fake<Gallery>();
-            A.CallTo(() => _galleriesService.GetById(id)).Returns(gallery);
-            //Act
-            var result = _galleriesController.Details(id);
-            //Assert
-            result.Should().BeOfType<Task<IActionResult>>();
+            // Arrange
+            var roomId = 1;
+
+            // Act
+            var result = _controller.Create(roomId);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<Gallery>(viewResult.ViewData.Model);
+            Assert.Equal(roomId, model.RoomId);
+        }
+
+        [Fact]
+        public async Task Edit_WithId_ReturnsViewResultWithGallery()
+        {
+            // Arrange
+            var galleryId = 1;
+            var gallery = new Gallery { Id = galleryId };
+            _galleriesServiceMock.Setup(s => s.GetById(galleryId)).ReturnsAsync(gallery);
+
+            // Act
+            var result = await _controller.Edit(galleryId);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<Gallery>(viewResult.ViewData.Model);
+            Assert.Equal(gallery, model);
+        }
+
+        [Fact]
+        public async Task Delete_WithId_ReturnsViewResultWithGallery()
+        {
+            // Arrange
+            var galleryId = 1;
+            var gallery = new Gallery { Id = galleryId };
+            _galleriesServiceMock.Setup(s => s.GetById(galleryId)).ReturnsAsync(gallery);
+
+            // Act
+            var result = await _controller.Delete(galleryId);
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            var model = Assert.IsAssignableFrom<Gallery>(viewResult.ViewData.Model);
+            Assert.Equal(gallery, model);
         }
     }
 }
